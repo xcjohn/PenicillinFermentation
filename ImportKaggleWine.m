@@ -21,7 +21,7 @@ opts.ExtraColumnsRule = "ignore";
 opts.EmptyLineRule = "read";
 
 % Import the data
-wineclustering = readtable("C:\Users\JOrsmond\MATLAB\Projects\masters\data\kaggle\wine-clustering.csv", opts);
+wineclustering = readtable("C:\Users\Jedd\Documents\MATLAB\masters\dataCommit\kaggle\wine-clustering.csv", opts);
 
 
 %% Clear temporary variables
