@@ -1,0 +1,1 @@
+SaveHistoryToCSV(history_new, "batch", ignoredProps)
