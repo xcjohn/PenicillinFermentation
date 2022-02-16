@@ -73,6 +73,7 @@ epsilon_ideal = 1.2;
 min_points_ideal = 30;
 idx = dbscan(X, epsilon_ideal, min_points_ideal ); %idx represents the cluster assigned to each data point
 figure(20);
+title 'Wine Dataset [DBSCAN]';
 gscatter(PC1,PC2,idx,'bgmr');
 
 %addpath(genpath('./util/'));
