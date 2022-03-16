@@ -6,7 +6,7 @@ clf;
 load('C:\Users\JOrsmond\MATLAB\Projects\masters\data\five_historicalbatches_aligned_trimmed_unfolded.mat'); %unfolded
 dataset_raw = unfolded;
 
-inputVars = ["CL", "CO2", "S", "T", "V", "pH", "X", "F", "Pw"];
+inputVars = ["CL", "CO2", "S", "T", "V", "pH", "X", "F", "Pw", "Qrxn"];
 outputVars = ["P"];
 
 %% Center and Scale Dataset
@@ -80,7 +80,7 @@ end
 
 %can use maximum curvature point to automatically find 'elbow' or enter
 %manually below
-min_k_index = 3;
+min_k_index = 4;
 k_min = k(1,min_k_index);
 [idx2, centroidLocations] = kmeans( [PC1, PC2], k_min, 'Replicates',5 );
 
@@ -91,9 +91,9 @@ xlabel 'number of clusters, k';
 ylabel 'total euclidean distance';
 
 figure(4);
-gscatter(PC1,PC2,idx2,'bgm'); hold on;
+gscatter(PC1,PC2,idx2,'bgmc'); hold on;
 plot(centroidLocations(:,1),centroidLocations(:,2),'kx');
-legend('Cluster 1','Cluster 2','Cluster 3','Centroids')
-title 'Wine Data';
+legend('Cluster 1','Cluster 2','Cluster 3','Cluster 4', 'Centroids')
+title 'Data';
 xlabel 'PC1'; 
 ylabel 'PC2';

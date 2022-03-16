@@ -18,7 +18,7 @@ testReference = golden1.CL;
 tout = [0:1:450];
 
 signal_resampled = resample ( testSignal, tout );
-
+reference_resampled = resample( testReference, tout);
 
 
 
@@ -31,8 +31,8 @@ pyversion
 % end
 % 
 % 
-sig = py.numpy.array(signal2_re);
-ref = py.numpy.array(reference_re);
+sig = py.numpy.array(signal_resampled);
+ref = py.numpy.array(reference_resampled);
 
 %pyout = py.tslearn.metrics.dtw_path_limited_warping_length(sig, ref, length(sig))
 
