@@ -2,6 +2,9 @@ clear all;
 clc;
 addpath(genpath('./util/'));        % (import util functions into current Path)
 addpath(genpath('./plotting/'));    % (import plotting functions into current Path)
+addpath(genpath('./1 - Generate Data/'));
+addpath(genpath('./2 - Preprocess Data/'));
+addpath(genpath('./3 - Clustering/'));
 
 
 %1. Generate Historical Data ('history' - array of SimulationOutput)
@@ -11,8 +14,8 @@ GenerateHistoricalBatches; %set k=... in file.
 GenerateGoldenBatch; 
 
 %3. Plot All
-load ('data\goldenBatch.mat');
-load ('data\historicalBatches.mat');
+load ('dataCommit\goldenBatch.mat');
+load ('dataCommit\historicalBatches.mat');
 %PlotAllBatches(history);
 
 %4. Find optimal DTW Sync. Window Period
