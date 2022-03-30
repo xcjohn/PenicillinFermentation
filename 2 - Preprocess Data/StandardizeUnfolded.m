@@ -1,4 +1,3 @@
-
 function [N, centers, scales] = StandardizeUnfolded(unfolded)
 
 % N = normalize(A) returns the vectorwise z-score of the data in A with center 0 and standard deviation 1.
