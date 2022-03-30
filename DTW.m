@@ -6,8 +6,8 @@ clear all;
 clf;
 clc;
 
-load ('data\goldenBatch.mat');
-load ('data\historicalBatches.mat');
+load ('dataCommit\goldenBatch.mat');
+load ('dataCommit\historicalBatches.mat');
 
 goldenP = golden1.S; %timeseries object
 batch1 = history(1,1).P;
