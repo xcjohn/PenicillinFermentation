@@ -36,48 +36,58 @@
     % fitgmdist stores the AIC and BIC of fitted gmdistribution model objects in the properties AIC and BIC. You can access these properties by using dot notation.
 
 %% Input Data
+% 
+% clear all;
+% clc;
+% clf;
+% 
+% %% Load Dataset
+% labels = ["Alcohol", "Malic acid", "Ash", "Alcalinity of ash", "Magnesium","Total phenols", "Flavanoids", "Nonflavanoid phenols", "Proanthocyanins", "Color intensity", "Hue", "OD280/OD315", "Proline" ];
+% ImportKaggleWine; % --> wineclustering (table)
+% dataset_raw = wineclustering;
+% 
+% %% Center and Scale Dataset
+% [dataset_Standardized, means, stds] = StandardizeUnfolded(dataset_raw);
+% dataset_Standardized = table2array(dataset_Standardized);
+% 
+% %% REDUCE DIMENSIONALITY VIA PCA
+% [coeff, score, latent, tsquared, explained, mu] = pca( dataset_Standardized  );
+% 
+% PC1 = zeros(length(dataset_Standardized),1);
+% PC2 = zeros(length(dataset_Standardized),1);
+% PC3 = zeros(length(dataset_Standardized),1);
+% 
+% num_vars = size(dataset_Standardized);
+% 
+% PC1 = dataset_Standardized(:,1)*coeff(1,1); % V1*a
+% PC2 = dataset_Standardized(:,1)*coeff(1,2); 
+% PC3 = dataset_Standardized(:,1)*coeff(1,2); 
+% 
+% for i=2:num_vars(2)
+%     PC1 = PC1 + dataset_Standardized(:,i)*coeff(i,1);
+%     PC2 = PC2 + dataset_Standardized(:,i)*coeff(i,2);
+%     PC3 = PC3 + dataset_Standardized(:,i)*coeff(i,3);
+% end
+% 
+% 
+% X = [PC1, PC2];
 
-clear all;
-clc;
-clf;
-
-%% Load Dataset
-labels = ["Alcohol", "Malic acid", "Ash", "Alcalinity of ash", "Magnesium","Total phenols", "Flavanoids", "Nonflavanoid phenols", "Proanthocyanins", "Color intensity", "Hue", "OD280/OD315", "Proline" ];
-ImportKaggleWine; % --> wineclustering (table)
-dataset_raw = wineclustering;
-
-%% Center and Scale Dataset
-[dataset_Standardized, means, stds] = StandardizeUnfolded(dataset_raw);
-dataset_Standardized = table2array(dataset_Standardized);
-
-%% REDUCE DIMENSIONALITY VIA PCA
-[coeff, score, latent, tsquared, explained, mu] = pca( dataset_Standardized  );
-
-PC1 = zeros(length(dataset_Standardized),1);
-PC2 = zeros(length(dataset_Standardized),1);
-PC3 = zeros(length(dataset_Standardized),1);
-
-num_vars = size(dataset_Standardized);
-
-PC1 = dataset_Standardized(:,1)*coeff(1,1); % V1*a
-PC2 = dataset_Standardized(:,1)*coeff(1,2); 
-PC3 = dataset_Standardized(:,1)*coeff(1,2); 
-
-for i=2:num_vars(2)
-    PC1 = PC1 + dataset_Standardized(:,i)*coeff(i,1);
-    PC2 = PC2 + dataset_Standardized(:,i)*coeff(i,2);
-    PC3 = PC3 + dataset_Standardized(:,i)*coeff(i,3);
-end
-
-
-X = [PC1, PC2];
-
-
+rng(10); %reproducibility
+[labels, dataset_raw, dataset_std, PC] = ImportDataSet(1);
+X = PC(:,1:2);
 
 %% Tune GMM
 
 k_est = 3; %Estimated number of GMM components, as determined by K-means/DBSCAN
        %Search around these area
+
+mu = [0.422 0.539; 0.33 -2.03; -6.76 1.04; -5.38 -3.67; -3.50 -5.14 ];   
+
+S(1) = struct('mu',mu(1, :));
+S(2) = struct('mu',mu(1:2, :));
+S(3) = struct('mu',mu(1:3, :));
+S(4) = struct('mu',mu(1:4, :));
+S(5) = struct('mu',mu(1:5, :));
 
 k = (k_est-2):(k_est+2);
 nK = numel(k);
@@ -103,7 +113,8 @@ for m = 1:nSC
                 'CovarianceType',Sigma{j},...
                 'SharedCovariance',SharedCovariance{m},...
                 'RegularizationValue',RegularizationValue,...
-                'Options',options);
+                'Options',options, ...
+                'Start',S(i));
             aic(i,j,m) = gm{i,j,m}.AIC;
             bic(i,j,m) = gm{i,j,m}.BIC;
             converged(i,j,m) = gm{i,j,m}.Converged;
@@ -151,5 +162,5 @@ plot(gmBest.mu(:,1),gmBest.mu(:,2),'kx','LineWidth',2,'MarkerSize',10)
 title('Clustering [GMM, unshared/full');
 xlabel('PC1')
 ylabel('PC2')
-legend(h1,'Cluster 1','Cluster 2','Cluster 3','Location','NorthWest')
+legend(h1,'Cluster 1','Cluster 2','Cluster 3','Cluster 4', 'Cluster 5', 'Location','NorthWest')
 hold off

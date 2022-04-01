@@ -84,13 +84,13 @@ min_k_index = 4;
 k_min = k(1,min_k_index);
 [idx2, centroidLocations] = kmeans( [PC1, PC2], k_min, 'Replicates',5 );
 
-figure(3);
+figure(4);
 plot(k, distances);
 title 'Optimal Number of clusters - Elbow Method';
 xlabel 'number of clusters, k'; 
 ylabel 'total euclidean distance';
 
-figure(4);
+figure(5);
 gscatter(PC1,PC2,idx2,'bgmc'); hold on;
 plot(centroidLocations(:,1),centroidLocations(:,2),'kx');
 legend('Cluster 1','Cluster 2','Cluster 3','Cluster 4', 'Centroids')
